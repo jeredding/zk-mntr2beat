@@ -4,7 +4,6 @@ import (
     "net"
     "time"
     "bytes"
-    "strconv"
     "io/ioutil"
     "github.com/elastic/beats/libbeat/logp"
     "github.com/elastic/beats/libbeat/common"
@@ -13,13 +12,18 @@ import (
 )
 
 func init() {
-    helper.Registry.AddMetricSeter("zookeeper", "mntr", &MetricSeter{})
+    helper.Registry.AddMetricSeter("zookeeper", "mntr", New)
+}
+
+
+func New() helper.MetricSeter {
+    return &MetricSeter{}
 }
 
 type MetricSeter struct {
     Hostname string
     Port     string
-    Timeout  int
+    Timeout  time.Duration
 }
 
 func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
@@ -41,13 +45,12 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
 
     m.Hostname = config.Hostname
     m.Port = config.Port
-    m.Timeout = time.Duration(config.Timeout)
-
+    m.Timeout , _ = time.ParseDuration(config.Timeout)
     return nil
 }
 
 
-func (m *MetricSeter) Fetch(ms *helper.MetricSet) (event []common.MapStr, err error) {
+func (m *MetricSeter) Fetch(ms *helper.MetricSet, host string) (event common.MapStr, err error) {
     // this is basically implementing https://github.com/samuel/go-zookeeper/blob/master/zk/flw.go#L262
     conn, err := net.DialTimeout("tcp", net.JoinHostPort(m.Hostname, m.Port), m.Timeout)
     if err != nil {
@@ -60,7 +63,7 @@ func (m *MetricSeter) Fetch(ms *helper.MetricSet) (event []common.MapStr, err er
     conn.SetReadDeadline(time.Now().Add(m.Timeout))
 
     // now, lets write!
-    _ ,err := conn.Write([]byte("mntr"))
+    _ ,err = conn.Write([]byte("mntr"))
     if err != nil {
         logp.Err("Error sending mntr command: %v", err)
         return nil, err

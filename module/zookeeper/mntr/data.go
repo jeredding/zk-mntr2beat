@@ -54,75 +54,75 @@ func eventMapping(response io.Reader) common.MapStr {
     scanner := bufio.NewScanner(response)
     for scanner.Scan() {
 
-        re = regexp.MustCompile("zk_version +(.*$)")
+        re = regexp.MustCompile("zk_version\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             versionString = matches[1]
         }
-        re = regexp.MustCompile("zk_avg_latency +(.*$)")
+        re = regexp.MustCompile("zk_avg_latency\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             avgLatency, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_max_latency +(.*$)")
+        re = regexp.MustCompile("zk_max_latency\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             maxLatency, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_min_latency +(.*$)")
+        re = regexp.MustCompile("zk_min_latency\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             minLatency, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_packets_received +(.*$)")
+        re = regexp.MustCompile("zk_packets_received\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             packetsReceived, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_packets_sent +(.*$)")
+        re = regexp.MustCompile("zk_packets_sent\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             packetsSent, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_num_alive_connections +(.*$)")
+        re = regexp.MustCompile("zk_num_alive_connections\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             numAliveConnections, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_outstanding_requests +(.*$)")
+        re = regexp.MustCompile("zk_outstanding_requests\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             outstandingRequests, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_server_state +(.*$)")
+        re = regexp.MustCompile("zk_server_state\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             serverState, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_znode_count +(.*$)")
+        re = regexp.MustCompile("zk_znode_count\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             znodeCount, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_watch_count +(.*$)")
+        re = regexp.MustCompile("zk_watch_count\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             watchCount, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_ephemerals_count +(.*$)")
+        re = regexp.MustCompile("zk_ephemerals_count\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             ephemeralsCount, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_approximate_data_size +(.*$)")
+        re = regexp.MustCompile("zk_approximate_data_size\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             approximateDataSize, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_open_file_descriptor_count +(.*$)")
+        re = regexp.MustCompile("zk_open_file_descriptor_count\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             openFileDescriptorCount, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_max_file_descriptor_count +(.*$)")
+        re = regexp.MustCompile("zk_max_file_descriptor_count\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             maxFileDescriptorCount, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_followers +(.*$)")
+        re = regexp.MustCompile("zk_followers\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             znodeCount, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_synced_followers +(.*$)")
+        re = regexp.MustCompile("zk_synced_followers\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             syncedFollowers, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_pending_syncs +(.*$)")
+        re = regexp.MustCompile("zk_pending_syncs\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             pendingSyncs, _ = strconv.Atoi(matches[1])
         }
