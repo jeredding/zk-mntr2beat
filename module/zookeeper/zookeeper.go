@@ -5,11 +5,16 @@ import (
 )
 
 func init() {
-    helper.Registry.AddModuler("zookeeper", Moduler{})
+    helper.Registry.AddModuler("zookeeper", New)
+}
+
+// New creates new instance of Moduler
+func New() helper.Moduler {
+    return &Moduler{}
 }
 
 type Moduler struct {}
 
-func (r Moduler) Setup() error {
+func (r Moduler) Setup(mo *helper.Module) error {
     return nil
 }
