@@ -30,7 +30,7 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
     }{
         Hostname: "127.0.0.1",
         Port:     "2181",
-        Timeout:  "60"
+        Timeout:  "60",
     }
 
     if err := ms.Module.ProcessConfig(&config); err != nil {
@@ -58,7 +58,7 @@ func (m *MetricSeter) Fetch(ms *helper.MetricSet) (events []common.MapStr, err e
     conn.SetReadDeadline(time.Now().Add(m.Timeout))
 
     // now, lets write!
-    _,err := conn.Write([]byte("mntr"))
+    _ ,err := conn.Write([]byte("mntr"))
     if err != nil {
         logp.Err("Error sending mntr command: %v", err)
         return nill, err
