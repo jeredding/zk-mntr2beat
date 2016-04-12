@@ -9,6 +9,7 @@ import (
     "github.com/elastic/beats/libbeat/logp"
     "github.com/elastic/beats/libbeat/common"
     "github.com/elastic/beats/metricbeat/helper"
+    _ "github.com/jeredding/zk-mntr2beat/module/zookeeper"
 )
 
 func init() {
@@ -31,7 +32,7 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
     }{
         Hostname: "127.0.0.1",
         Port:     "2181",
-        Timeout:  "60",
+        Timeout:  "60s",
     }
 
     if err := ms.Module.ProcessConfig(&config); err != nil {
@@ -40,15 +41,15 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
 
     m.Hostname = config.Hostname
     m.Port = config.Port
-    m.Timeout = time.Duration(strconv.Atoi(config.Timeout)) * time.Second
+    m.Timeout = time.Duration(config.Timeout)
 
     return nil
 }
 
 
-func (m *MetricSeter) Fetch(ms *helper.MetricSet) (events []common.MapStr, err error) {
+func (m *MetricSeter) Fetch(ms *helper.MetricSet) (event []common.MapStr, err error) {
     // this is basically implementing https://github.com/samuel/go-zookeeper/blob/master/zk/flw.go#L262
-    conn, err := net.DialTimeout("tcp", m.Hostname+m.Port, m.Timeout)
+    conn, err := net.DialTimeout("tcp", net.JoinHostPort(m.Hostname, m.Port), m.Timeout)
     if err != nil {
         logp.Err("Error connecting to host (%s:%s): %v", m.Hostname, m.Port, err)
         return nil, err

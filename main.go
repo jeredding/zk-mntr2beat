@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/elastic/beats/metricbeat/beater"
-	"github.com/jeredding/zk-mntr2beat/module/zookeeper/mntr"
-	"github.com/jeredding/zk-mntr2beat/module/zookeeper"
+	_ "github.com/jeredding/zk-mntr2beat/module/zookeeper/mntr"
+	_ "github.com/jeredding/zk-mntr2beat/module/zookeeper"
 
 	"github.com/elastic/beats/libbeat/beat"
 )
