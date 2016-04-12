@@ -1,0 +1,7 @@
+metricbeat:
+  modules:
+    - module: zookeeper
+      metricsets: ["mntr"]
+      period: 5s
+      enabled: true
+

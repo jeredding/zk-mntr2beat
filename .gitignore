@@ -1,0 +1,7 @@
+# Folders
+.idea
+vendor
+
+# Files
+zk-mntr2beat
+glide.lock
