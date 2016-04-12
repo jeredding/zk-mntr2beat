@@ -4,9 +4,6 @@ metricbeat:
       metricsets: ["mntr"]
       period: 5s
       enabled: true
-      hostname: 172.17.42.1
-      port: 2181
-      timeout: 10
 
 ###############################################################################
 ############################# Libbeat Config ##################################
@@ -19,12 +16,12 @@ metricbeat:
 output:
 
   ### Elasticsearch as output
-  #elasticsearch:
+  elasticsearch:
     # Array of hosts to connect to.
     # Scheme and port can be left out and will be set to the default (http and 9200)
     # In case you specify and additional path, the scheme is required: http://localhost:9200/path
     # IPv6 addresses should always be defined as: https://[2001:db8::1]:9200
-    #hosts: ["localhost:9200"]
+    hosts: ["localhost:9200"]
 
     # Optional protocol and basic auth credentials.
     #protocol: "https"
@@ -39,20 +36,20 @@ output:
     # Number of workers per Elasticsearch host.
     #worker: 1
 
-    # Optional index name. The default is "zkbeat" and generates
-    # [zkbeat-]YYYY.MM.DD keys.
-    #index: "zkbeat"
+    # Optional index name. The default is "zk-mntr2beat" and generates
+    # [zk-mntr2beat-]YYYY.MM.DD keys.
+    #index: "zk-mntr2beat"
 
     # A template is used to set the mapping in Elasticsearch
     # By default template loading is disabled and no template is loaded.
     # These settings can be adjusted to load your own template or overwrite existing ones
     #template:
 
-      # Template name. By default the template name is zkbeat.
-      #name: "zkbeat"
+      # Template name. By default the template name is zk-mntr2beat.
+      #name: "zk-mntr2beat"
 
       # Path to template file
-      #path: "zkbeat.template.json"
+      #path: "zk-mntr2beat.template.json"
 
       # Overwrite existing template
       #overwrite: false
@@ -135,7 +132,7 @@ output:
     # Optional index name. The default index name depends on the each beat.
     # For Packetbeat, the default is set to packetbeat, for Topbeat
     # top topbeat and for Filebeat to filebeat.
-    #index: zkbeat
+    #index: zk-mntr2beat
 
     # Optional TLS. By default is off.
     #tls:
@@ -164,10 +161,10 @@ output:
   ### File as output
   #file:
     # Path to the directory where to save the generated files. The option is mandatory.
-    #path: "/tmp/zkbeat"
+    #path: "/tmp/zk-mntr2beat"
 
-    # Name of the generated files. The default is `zkbeat` and it generates files: `zkbeat`, `zkbeat.1`, `zkbeat.2`, etc.
-    #filename: zkbeat
+    # Name of the generated files. The default is `zk-mntr2beat` and it generates files: `zk-mntr2beat`, `zk-mntr2beat.1`, `zk-mntr2beat.2`, etc.
+    #filename: zk-mntr2beat
 
     # Maximum size in kilobytes of each file. When this size is reached, the files are
     # rotated. The default value is 10 MB.
@@ -180,9 +177,9 @@ output:
 
 
   ### Console output
-  console:
+  # console:
     # Pretty print json event
-    #pretty: true
+    #pretty: false
 
 
 ############################# Shipper #########################################
@@ -200,7 +197,7 @@ shipper:
 
   # Optional fields that you can specify to add additional information to the
   # output. Fields can be scalar values, arrays, dictionaries, or any nested
-  # combination of these.
+  # combination of these. 
   #fields:
   #  env: staging
 

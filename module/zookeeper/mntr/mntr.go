@@ -2,8 +2,9 @@ package mntr
 
 import (
     "net"
-    "fmt"
     "time"
+    "bytes"
+    "strconv"
     "io/ioutil"
     "github.com/elastic/beats/libbeat/logp"
     "github.com/elastic/beats/libbeat/common"
@@ -17,7 +18,7 @@ func init() {
 type MetricSeter struct {
     Hostname string
     Port     string
-    Timeout  uint64
+    Timeout  int
 }
 
 func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
@@ -39,7 +40,7 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
 
     m.Hostname = config.Hostname
     m.Port = config.Port
-    m.Timeout = time.Duration(strconv.Atoi(config.Timeout)) *time.Second
+    m.Timeout = time.Duration(strconv.Atoi(config.Timeout)) * time.Second
 
     return nil
 }
@@ -50,7 +51,7 @@ func (m *MetricSeter) Fetch(ms *helper.MetricSet) (events []common.MapStr, err e
     conn, err := net.DialTimeout("tcp", m.Hostname+m.Port, m.Timeout)
     if err != nil {
         logp.Err("Error connecting to host (%s:%s): %v", m.Hostname, m.Port, err)
-        return nill, err
+        return nil, err
     }
 
     defer conn.Close()
@@ -61,18 +62,18 @@ func (m *MetricSeter) Fetch(ms *helper.MetricSet) (events []common.MapStr, err e
     _ ,err := conn.Write([]byte("mntr"))
     if err != nil {
         logp.Err("Error sending mntr command: %v", err)
-        return nill, err
+        return nil, err
     }
 
     // lets read, but only for so long...
-    conn.SetReadDeadline(time.Now().Add(timeout))
+    conn.SetReadDeadline(time.Now().Add(m.Timeout))
 
     // gobble gobble...
     result, err := ioutil.ReadAll(conn)
 
     if err != nil {
         logp.Err("Error reading mntr command: %v", err)
-        return nill, err
+        return nil, err
     }
 
     return eventMapping(bytes.NewReader(result)), nil
