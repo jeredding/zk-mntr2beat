@@ -2,7 +2,7 @@ package mntr
 
 import (
     "bufio"
-    "bytes"
+    "io"
     "net"
     "regexp"
     "strconv"
@@ -53,7 +53,13 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
 
 
 func (m *MetricSeter) Fetch(ms *helper.MetricSet, host string) (event common.MapStr, err error) {
-    outputReader := zookeeper.RunCommand("mntr", net.JoinHostPort(m.Hostname, m.Port), m.Timeout)
+    command := "mntr"
+    connectionString := net.JoinHostPort(m.Hostname, m.Port)
+    outputReader, err := zookeeper.RunCommand(command, connectionString, m.Timeout)
+    if err != nil {
+        logp.Err("Error running four-letter command %s on %s: %v", command, connectionString, err)
+        return nil, err
+    }
     return mntrEventMapping(outputReader), nil
 }
 
@@ -61,6 +67,7 @@ func mntrEventMapping(response io.Reader) common.MapStr {
 
     var (
         versionString           string
+        serverState             string
         avgLatency              int
         minLatency              int
         maxLatency              int
@@ -68,7 +75,6 @@ func mntrEventMapping(response io.Reader) common.MapStr {
         packetsSent             int
         numAliveConnections     int
         outstandingRequests     int
-        serverState             int
         znodeCount              int
         watchCount              int
         ephemeralsCount         int
@@ -107,6 +113,10 @@ func mntrEventMapping(response io.Reader) common.MapStr {
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             versionString = matches[1]
         }
+        re = regexp.MustCompile("zk_server_state\\s+(.*$)")
+        if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
+            serverState = matches[1]
+        }
         re = regexp.MustCompile("zk_avg_latency\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             avgLatency, _ = strconv.Atoi(matches[1])
@@ -135,10 +145,6 @@ func mntrEventMapping(response io.Reader) common.MapStr {
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             outstandingRequests, _ = strconv.Atoi(matches[1])
         }
-        re = regexp.MustCompile("zk_server_state\\s+(.*$)")
-        if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
-            serverState, _ = strconv.Atoi(matches[1])
-        }
         re = regexp.MustCompile("zk_znode_count\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
             znodeCount, _ = strconv.Atoi(matches[1])
@@ -165,7 +171,7 @@ func mntrEventMapping(response io.Reader) common.MapStr {
         }
         re = regexp.MustCompile("zk_followers\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {
-            znodeCount, _ = strconv.Atoi(matches[1])
+            followers, _ = strconv.Atoi(matches[1])
         }
         re = regexp.MustCompile("zk_synced_followers\\s+(.*$)")
         if matches := re.FindStringSubmatch(scanner.Text()); matches != nil {

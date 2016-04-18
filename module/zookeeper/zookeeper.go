@@ -1,10 +1,13 @@
 package zookeeper
 
 import (
-    "github.com/elastic/beats/metricbeat/helper"
     "time"
     "io"
     "io/ioutil"
+    "net"
+    "bytes"
+    "github.com/elastic/beats/libbeat/logp"
+    "github.com/elastic/beats/metricbeat/helper"
 )
 
 func init() {
@@ -24,7 +27,7 @@ func (r Moduler) Setup(mo *helper.Module) error {
 
 // generic socket communication for four-letter commands.  returns a reader object to
 // pass to a mapping that'll dissect the output
-func RunCommand(command string, connectionString string, timeout time.Duration) {
+func RunCommand(command string, connectionString string, timeout time.Duration) (responseReader io.Reader, err error) {
     // this is basically implementing https://github.com/samuel/go-zookeeper/blob/master/zk/flw.go#L262
 
     conn, err := net.DialTimeout("tcp", connectionString, timeout)
@@ -54,5 +57,5 @@ func RunCommand(command string, connectionString string, timeout time.Duration) 
         logp.Err("Error reading  %s command: %v", command, err)
         return nil, err
     }
-    return bytes.NewReader(result)
+    return bytes.NewReader(result), nil
 }
