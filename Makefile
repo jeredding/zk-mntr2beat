@@ -1,4 +1,4 @@
-BEATNAME=zk-mntr2beat
+BEATNAME=zkbeat
 BEAT_DIR=github.com/jeredding
 SYSTEM_TESTS=false
 TEST_ENVIRONMENT=false

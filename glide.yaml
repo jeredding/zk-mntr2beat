@@ -1,7 +1,7 @@
-package: github.com/jeredding/zk-mntr2beat
+package: github.com/jeredding/zkbeat
 import:
 - package: github.com/elastic/beats
-  version: 7ce23cc968fb554c01a5304f1320835e70539aaf
+  version: f4df86caa75d3287d56086916f6a952d59fe06f3
   subpackages:
   - /libbeat/beat
   - metricbeat/beater

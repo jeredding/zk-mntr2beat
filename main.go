@@ -5,11 +5,11 @@ import (
     "github.com/elastic/beats/libbeat/beat"
 	"github.com/elastic/beats/metricbeat/beater"
     _ "github.com/elastic/beats/metricbeat/include"
-	_ "github.com/jeredding/zk-mntr2beat/module/zookeeper/mntr"
-	_ "github.com/jeredding/zk-mntr2beat/module/zookeeper"
+	_ "github.com/jeredding/zkbeat/module/zookeeper/mntr"
+	_ "github.com/jeredding/zkbeat/module/zookeeper"
 )
 
-var Name = "zk-mntr2beat"
+var Name = "zkbeat"
 
 func main() {
 	if err := beat.Run(Name, "", beater.New()); err != nil {

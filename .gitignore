@@ -3,5 +3,5 @@
 vendor
 
 # Files
-zk-mntr2beat
+zkbeat
 glide.lock

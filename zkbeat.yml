@@ -2,7 +2,7 @@ metricbeat:
   modules:
     - module: zookeeper
       metricsets: ["mntr"]
-      period: 5s
+      period: 1s
       enabled: true
       hostname: 172.17.42.1
       port: 2181
@@ -39,20 +39,20 @@ output:
     # Number of workers per Elasticsearch host.
     #worker: 1
 
-    # Optional index name. The default is "zk-mntr2beat" and generates
-    # [zk-mntr2beat-]YYYY.MM.DD keys.
-    #index: "zk-mntr2beat"
+    # Optional index name. The default is "zkbeat" and generates
+    # [zkbeat-]YYYY.MM.DD keys.
+    #index: "zkbeat"
 
     # A template is used to set the mapping in Elasticsearch
     # By default template loading is disabled and no template is loaded.
     # These settings can be adjusted to load your own template or overwrite existing ones
     #template:
 
-      # Template name. By default the template name is zk-mntr2beat.
-      #name: "zk-mntr2beat"
+      # Template name. By default the template name is zkbeat.
+      #name: "zkbeat"
 
       # Path to template file
-      #path: "zk-mntr2beat.template.json"
+      #path: "zkbeat.template.json"
 
       # Overwrite existing template
       #overwrite: false
@@ -135,7 +135,7 @@ output:
     # Optional index name. The default index name depends on the each beat.
     # For Packetbeat, the default is set to packetbeat, for Topbeat
     # top topbeat and for Filebeat to filebeat.
-    #index: zk-mntr2beat
+    #index: zkbeat
 
     # Optional TLS. By default is off.
     #tls:
@@ -162,12 +162,12 @@ output:
 
 
   ### File as output
-  file:
+  #file:
     # Path to the directory where to save the generated files. The option is mandatory.
-    path: "/tmp/zk-mntr2beat"
+    #path: "/tmp/zkbeat"
 
-    # Name of the generated files. The default is `zk-mntr2beat` and it generates files: `zk-mntr2beat`, `zk-mntr2beat.1`, `zk-mntr2beat.2`, etc.
-    filename: zk-mntr2beat
+    # Name of the generated files. The default is `zkbeat` and it generates files: `zkbeat`, `zkbeat.1`, `zkbeat.2`, etc.
+    #filename: zkbeat
 
     # Maximum size in kilobytes of each file. When this size is reached, the files are
     # rotated. The default value is 10 MB.
@@ -256,10 +256,10 @@ logging:
   # To enable logging to files, to_files option has to be set to true
   files:
     # The directory where the log files will written to.
-    path: /tmp/zk-mntr2beat/
+    path: /tmp/zkbeat/
 
     # The name of the files where the logs are written to.
-    name: zk-mntr2beat-log
+    name: zkbeat-log
 
     # Configure log file size limit. If limit is reached, log file will be
     # automatically rotated

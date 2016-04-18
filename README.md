@@ -1,4 +1,4 @@
-# zk-mntr2beat - zookeeper metrics
+# zkbeat - zookeeper metrics
 
 Zookeeper Metrics
 

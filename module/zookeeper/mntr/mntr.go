@@ -3,8 +3,6 @@ package mntr
 import (
     "bufio"
     "bytes"
-    "io"
-    "io/ioutil"
     "net"
     "regexp"
     "strconv"
@@ -12,7 +10,7 @@ import (
     "github.com/elastic/beats/libbeat/logp"
     "github.com/elastic/beats/libbeat/common"
     "github.com/elastic/beats/metricbeat/helper"
-    _ "github.com/jeredding/zk-mntr2beat/module/zookeeper"
+    "github.com/jeredding/zkbeat/module/zookeeper"
 )
 
 func init() {
@@ -55,39 +53,11 @@ func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
 
 
 func (m *MetricSeter) Fetch(ms *helper.MetricSet, host string) (event common.MapStr, err error) {
-    // this is basically implementing https://github.com/samuel/go-zookeeper/blob/master/zk/flw.go#L262
-    conn, err := net.DialTimeout("tcp", net.JoinHostPort(m.Hostname, m.Port), m.Timeout)
-    if err != nil {
-        logp.Err("Error connecting to host (%s:%s): %v", m.Hostname, m.Port, err)
-        return nil, err
-    }
-
-    defer conn.Close()
-    // timeout attempting to write...
-    conn.SetReadDeadline(time.Now().Add(m.Timeout))
-
-    // now, lets write!
-    _ ,err = conn.Write([]byte("mntr"))
-    if err != nil {
-        logp.Err("Error sending mntr command: %v", err)
-        return nil, err
-    }
-
-    // lets read, but only for so long...
-    conn.SetReadDeadline(time.Now().Add(m.Timeout))
-
-    // gobble gobble...
-    result, err := ioutil.ReadAll(conn)
-
-    if err != nil {
-        logp.Err("Error reading mntr command: %v", err)
-        return nil, err
-    }
-
-    return eventMapping(bytes.NewReader(result)), nil
+    outputReader := zookeeper.RunCommand("mntr", net.JoinHostPort(m.Hostname, m.Port), m.Timeout)
+    return mntrEventMapping(outputReader), nil
 }
 
-func eventMapping(response io.Reader) common.MapStr {
+func mntrEventMapping(response io.Reader) common.MapStr {
 
     var (
         versionString           string
