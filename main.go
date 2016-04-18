@@ -1,12 +1,12 @@
 package main
 
 import (
-	"os"
-    "github.com/elastic/beats/libbeat/beat"
+	"github.com/elastic/beats/libbeat/beat"
 	"github.com/elastic/beats/metricbeat/beater"
-    _ "github.com/elastic/beats/metricbeat/include"
-	_ "github.com/jeredding/zkbeat/module/zookeeper/mntr"
+	_ "github.com/elastic/beats/metricbeat/include"
 	_ "github.com/jeredding/zkbeat/module/zookeeper"
+	_ "github.com/jeredding/zkbeat/module/zookeeper/mntr"
+	"os"
 )
 
 var Name = "zkbeat"

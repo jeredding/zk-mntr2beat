@@ -22,3 +22,8 @@ install-cfg:
 .PHONY: update-deps
 update-deps:
 	glide update  --no-recursive
+
+
+.PHONY: int-test
+int-test:
+	./zkbeat -c zkbeat.yml -v
