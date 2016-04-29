@@ -12,76 +12,76 @@ zookeeper:
         - name: hostname
           type: string
           description: >
-            hostname
+            The hostname of the system running the beat.
         - name: approximate_data_size
-          type: integer
+          type: long
           description: >
-            Approximate size of zookeeper data
+            Approximate size of zookeeper data.
         - name: avg_latency
           type: integer
           description: >
-            Average latency between ensemble hosts in milliseconds
+            Average latency between ensemble hosts in milliseconds.
         - name: ephemerals_count
           type: integer
           description: >
-            Number of ephemeral znodes
+            Number of ephemeral znodes.
         - name: followers
           type: integer
           description: >
-            Number of followers seen by the current host
+            Number of followers seen by the current host.
         - name: max_file_descriptor_count
           type: integer
           description: >
-            Maximum number of file descriptors allowed for the zookeeper process
+            Maximum number of file descriptors allowed for the zookeeper process.
         - name: max_latency
           type: integer
           description: >
-            Maximum latency in milliseconds
+            Maximum latency in milliseconds.
         - name: min_latency
           type: integer
           description: >
-            Minimum latency in milliseconds
+            Minimum latency in milliseconds.
         - name: num_alive_connections
           type: integer
           description: >
-            Number of connections to zookeeper that are currently alive
+            Number of connections to zookeeper that are currently alive.
         - name: open_file_descriptor_count
           type: integer
           description: >
-            Number of file descriptors open by the zookeeper process
+            Number of file descriptors open by the zookeeper process.
         - name: outstanding_requests
           type: integer
           description: >
-            Number of outstanding requests that need to be processed by the cluster
+            Number of outstanding requests that need to be processed by the cluster.
         - name: packets_received
-          type: integer
+          type: long
           description: >
-            Number zookeeper network packets received
+            Number zookeeper network packets received.
         - name: packets_sent
-          type: integer
+          type: long
           description: >
-            Number zookeeper network packets sent
+            Number zookeeper network packets sent.
         - name: pending_syncs
           type: integer
           description: >
-            Number of pending syncs to carry out to zookeeper ensemble followers
+            Number of pending syncs to carry out to zookeeper ensemble followers.
         - name: server_state
           type: string
           description: >
-            Role in the zookeeper ensemble
+            Role in the zookeeper ensemble.
         - name: synced_followers
           type: integer
           description: >
-            Number of synced followers reported when a node server_state is leader
+            Number of synced followers reported when a node server_state is leader.
         - name: version_string
           type: string
           description: >
-            Zookeeper version and build string reported
+            Zookeeper version and build string reported.
         - name: watch_count
           type: integer
           description: >
-            Number of watches currently set on the local zookeeper process
+            Number of watches currently set on the local zookeeper process.
         - name: znode_count
           type: integer
           description: >
-            Number of znodes reported by the local zookeeper process
+            Number of znodes reported by the local zookeeper process.

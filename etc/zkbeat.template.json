@@ -1,0 +1,219 @@
+{
+  "mappings": {
+    "_default_": {
+      "_all": {
+        "norms": {
+          "enabled": false
+        }
+      },
+      "dynamic_templates": [
+        {
+          "fields": {
+            "mapping": {
+              "ignore_above": 1024,
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "match_mapping_type": "string",
+            "path_match": "fields.*"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "beat": {
+          "properties": {
+            "hostname": {
+              "ignore_above": 1024,
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "name": {
+              "ignore_above": 1024,
+              "index": "not_analyzed",
+              "type": "string"
+            }
+          }
+        },
+        "metricset": {
+          "ignore_above": 1024,
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "metricset-host": {
+          "ignore_above": 1024,
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "module": {
+          "ignore_above": 1024,
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "system-cpu": {
+          "properties": {
+            "idle": {
+              "type": "long"
+            },
+            "iowait": {
+              "type": "long"
+            },
+            "irq": {
+              "type": "long"
+            },
+            "nice": {
+              "type": "long"
+            },
+            "softirq": {
+              "type": "long"
+            },
+            "steal": {
+              "type": "long"
+            },
+            "system": {
+              "type": "long"
+            },
+            "system_p": {
+              "type": "float"
+            },
+            "user": {
+              "type": "long"
+            },
+            "user_p": {
+              "type": "float"
+            }
+          }
+        },
+        "system-memory": {
+          "properties": {
+            "mem": {
+              "properties": {
+                "actual_free": {
+                  "type": "long"
+                },
+                "actual_used": {
+                  "type": "long"
+                },
+                "actual_used_p": {
+                  "type": "float"
+                },
+                "free": {
+                  "type": "long"
+                },
+                "total": {
+                  "type": "long"
+                },
+                "used": {
+                  "type": "long"
+                },
+                "used_p": {
+                  "type": "float"
+                }
+              }
+            },
+            "swap": {
+              "properties": {
+                "free": {
+                  "type": "long"
+                },
+                "total": {
+                  "type": "long"
+                },
+                "used": {
+                  "type": "long"
+                },
+                "used_p": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        },
+        "tags": {
+          "ignore_above": 1024,
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "type": {
+          "ignore_above": 1024,
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "zookeeper-mntr": {
+          "properties": {
+            "approximate_data_size": {
+              "type": "integer"
+            },
+            "avg_latency": {
+              "type": "integer"
+            },
+            "ephemerals_count": {
+              "type": "integer"
+            },
+            "followers": {
+              "type": "integer"
+            },
+            "hostname": {
+              "ignore_above": 1024,
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "max_file_descriptor_count": {
+              "type": "integer"
+            },
+            "max_latency": {
+              "type": "integer"
+            },
+            "min_latency": {
+              "type": "integer"
+            },
+            "num_alive_connections": {
+              "type": "integer"
+            },
+            "open_file_descriptor_count": {
+              "type": "integer"
+            },
+            "outstanding_requests": {
+              "type": "integer"
+            },
+            "packets_received": {
+              "type": "integer"
+            },
+            "packets_sent": {
+              "type": "integer"
+            },
+            "pending_syncs": {
+              "type": "integer"
+            },
+            "server_state": {
+              "ignore_above": 1024,
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "synced_followers": {
+              "type": "integer"
+            },
+            "version_string": {
+              "ignore_above": 1024,
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "watch_count": {
+              "type": "integer"
+            },
+            "znode_count": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  },
+  "order": 0,
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "template": "zkbeat-*"
+}

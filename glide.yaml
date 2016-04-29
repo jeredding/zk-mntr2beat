@@ -1,7 +1,6 @@
 package: github.com/jeredding/zkbeat
 import:
 - package: github.com/elastic/beats
-  version: 647d92e77f418392c37b11d46240a6c94c9eff6a
   subpackages:
   - /libbeat/beat
   - metricbeat/beater

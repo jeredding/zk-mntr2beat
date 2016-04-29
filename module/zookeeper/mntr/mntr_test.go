@@ -7,45 +7,49 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/elastic/beats/libbeat/common"
+	"time"
+
 	"github.com/elastic/beats/metricbeat/helper"
-	"github.com/jeredding/zk-mntr2docker/module/zookeeper"
+	"github.com/elastic/beats/metricbeat/module/zookeeper"
 )
 
 func TestConnect(t *testing.T) {
 
-	config, _ := getZookeeperModuleConfig()
+	config := helper.ModuleConfig{
+		Hosts: []string{zookeeper.GetZookeeperEnvHost() + ":" + zookeeper.GetZookeeperEnvPort()},
+	}
 
-	module, mErr := helper.NewModule(config, zookeeper.New)
-	assert.NoError(t, mErr)
-	ms, msErr := helper.NewMetricSet("status", New, module)
+	timeout, _ := 5 * time.Second
+	module := &helper.Module{
+		Config:  config,
+		Timeout: timeout,
+	}
+
+	ms, msErr := helper.NewMetricSet("mntr", New, module)
 	assert.NoError(t, msErr)
 
-	// Setup metricset and metricseter
-	err := ms.Setup()
-	assert.NoError(t, err)
-	err = ms.MetricSeter.Setup(ms)
+	var err error
+
+	// Setup metricset
+	err = ms.Setup()
 	assert.NoError(t, err)
 
-	// Check that host is correctly set
-	assert.Equal(t, zookeeper.GetZookeeperEnvHost(), ms.Config.Hosts[0])
-
-	data, err := ms.MetricSeter.Fetch(ms, ms.Config.Hosts[0])
+	// Load events
+	event, err := ms.MetricSeter.Fetch(ms, module.Config.Hosts[0])
 	assert.NoError(t, err)
+
+	// Check values
+	version := event["version_string"].(string)
+	avgLatency := event["avg_latency"].(int)
+	maxLatency := event["max_latency"].(int)
+	numAliveConnections := event["num_alive_connections"].(int)
+
+	assert.Equal(t, version, "3.4.8--1, built on 02/06/2016 03:18 GMT")
+	assert.True(t, avgLatency >= 0)
+	assert.True(t, maxLatency >= 0)
+	assert.True(t, numAliveConnections > 0)
 
 	// Check fields
-	assert.Equal(t, 13, len(data))
-}
+	assert.Equal(t, 18, len(event))
 
-type ZookeeperModuleConfig struct {
-	Hosts  []string `config:"hostname"`
-	Module string   `config:"module"`
-}
-
-func getZookeeperModuleConfig() (*common.Config, error) {
-	return common.NewConfigFrom(ZookeeperModuleConfig{
-		Module:   "zookeeper",
-		Hostname: []string{zookeeper.GetZookeeperEnvHost()},
-		Port:     []string{zookeeper.GetZookeeperEnvPort()},
-	})
 }
